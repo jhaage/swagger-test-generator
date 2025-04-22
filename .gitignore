@@ -1,0 +1,20 @@
+# Ignore target directories
+/target/
+/examples/sample_api/target/
+
+# Ignore our default output directory for generated tests
+/output/
+
+# Ignore debug metadata files
+*.d
+
+# Ignore Cargo.lock for libraries (optional, keep for binaries)
+Cargo.lock
+
+# Ignore temporary files
+*.tmp
+*.log
+
+# Ignore system files
+.DS_Store
+Thumbs.db
