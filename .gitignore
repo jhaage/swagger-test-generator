@@ -2,6 +2,9 @@
 /target/
 /examples/sample_api/target/
 
+# Ignore local .env
+.env
+
 # Ignore our default output directory for generated tests
 /output/
 

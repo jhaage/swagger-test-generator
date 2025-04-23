@@ -1,0 +1,15 @@
+[release]
+# Specify the default release level (e.g., patch, minor, major)
+level = "patch"
+
+# Update the Cargo.lock file during release
+update-lock = true
+
+# Push changes to the repository after release
+git-push = true
+
+# Create a tag for the release
+tag = true
+
+# Specify the branch to release from
+branch = "main"
