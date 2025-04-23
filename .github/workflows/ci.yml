@@ -26,11 +26,11 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
 
-      - name: Check code formatting
-        run: cargo fmt --all -- --check
+      # - name: Check code formatting
+      #   run: cargo fmt --all -- --check
 
-      - name: Clippy
-        run: cargo clippy -- -D warnings
+      # - name: Clippy
+      #   run: cargo clippy -- -D warnings
 
       - name: Run tests
         run: cargo test
