@@ -12,38 +12,60 @@ on:
       - created
 
 jobs:
-  test:
+  lint-and-test:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Rust
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
 
-    - name: Run tests
-      run: cargo test
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
 
-  version:
+      # - name: Check code formatting
+      #   run: cargo fmt --all -- --check
+
+      # - name: Clippy
+      #   run: cargo clippy -- -D warnings
+
+      - name: Run tests
+        run: cargo test
+
+  version-bump:
+    needs: lint-and-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set up Rust
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
+      - name: Set Git user
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
-    - name: Install cargo-release
-      run: cargo install cargo-release
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
 
-    - name: Run cargo-release
-      env:
-        CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-      run: cargo release patch --no-publish
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+
+      - name: Install cargo-release
+        run: cargo install cargo-release --version 0.25.18
+
+      - name: Run cargo release
+        run: |
+          git pull
+          cargo release patch --execute --no-publish --no-confirm
+
+      - name: Push changes
+        run: git push --tags origin main

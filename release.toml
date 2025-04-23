@@ -1,15 +1,14 @@
-[release]
-# Specify the default release level (e.g., patch, minor, major)
-level = "patch"
-
-# Update the Cargo.lock file during release
-update-lock = true
-
-# Push changes to the repository after release
-git-push = true
-
-# Create a tag for the release
+sign-commit = false
+sign-tag = false
+push = true
+publish = false
 tag = true
+consolidate-commits = true
+pre-release-commit-message = "Release version {{version}}"
+tag-message = "Release {{version}}"
+tag-prefix = "v"
 
-# Specify the branch to release from
-branch = "main"
+pre-release-replacements = [
+  {file="CHANGELOG.md", search="## \\[Unreleased\\]", replace="## [Unreleased]\n\n## [{{version}}] - {{date}}"},
+  {file="CHANGELOG.md", search="\\[Unreleased\\]: https://github.com/jhaage/swagger-test-generator/compare/v[0-9]+\\.[0-9]+\\.[0-9]+\\.\\.\\.HEAD", replace="[Unreleased]: https://github.com/jhaage/swagger-test-generator/compare/v{{version}}...HEAD\n[{{version}}]: https://github.com/jhaage/swagger-test-generator/compare/v{{prev_version}}...v{{version}}"}
+]
