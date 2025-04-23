@@ -42,4 +42,4 @@ name = "run-dev"
 path = "run-dev.rs"
 
 [badges]
-actions = { status = true }
+actions = { status = "true" }
