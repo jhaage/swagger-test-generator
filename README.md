@@ -17,6 +17,8 @@ A command-line tool written in Rust that generates test cases from Swagger/OpenA
 
 ### From crates.io
 
+Coming Soon!
+
 ```bash
 cargo install swagger-test-generator
 ```
