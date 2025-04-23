@@ -1,8 +1,15 @@
-release = true
-
-[release.settings]
-level = "patch"
-update-lock = true
-git-push = true
+sign-commit = false
+sign-tag = false
+push = true
+publish = false
 tag = true
-branch = "main"
+consolidate-commits = true
+pre-release-commit-message = "Release version {{version}}"
+tag-message = "Release {{version}}"
+tag-prefix = "v"
+
+pre-release-replacements = [
+  {file="CHANGELOG.md", search="## \\[Unreleased\\]", replace="## [Unreleased]\n\n## [{{version}}] - {{date}}"},
+  {file="CHANGELOG.md", search="\\[Unreleased\\]: (.+/compare/)v[0-9]+\\.[0-9]+\\.[0-9]+\\.\\.\\.HEAD", replace="[Unreleased]: $1v{{version}}...HEAD\n[{{version}}]: $1v{{prev_version}}...v{{version}}"},
+  {file="CHANGELOG.md", search="\\[Unreleased\\]:", replace="[Unreleased]: https://github.com/jhaage/swagger-test-generator/compare/v{{version}}...HEAD\n[{{version}}]:"}
+]
